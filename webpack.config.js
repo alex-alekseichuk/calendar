@@ -16,12 +16,22 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                loaders: [
+                  {
+                    loader: 'ts-loader'
+                  },
+                  'angular2-template-loader'
+                ]
+                // use: 'ts-loader',
                 // /exclude: /node_modules/
             },
             {
                 test: /\.html$/,
                 loader: 'html-loader'
+            },
+            {
+                test: /\.(pug|jade)$/,
+                use: ['raw-loader', 'pug-html-loader']
             }
         ]
     },
