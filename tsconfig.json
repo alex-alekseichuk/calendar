@@ -6,8 +6,9 @@
 		"sourceMap": true,
 		"noImplicitAny": true,
 		"allowJs": true,
-		"lib": ["es5", "es6", "dom"],
-		"experimentalDecorators": true
+		"lib": ["es2015", "dom"],
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	},
 	"include": [
         "src/**/*"
