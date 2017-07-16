@@ -5,7 +5,6 @@
 		"module": "commonjs",
 		"sourceMap": true,
 		"noImplicitAny": true,
-		"jsx": "react",
 		"allowJs": true,
 		"lib": ["es5", "es6", "dom"],
 		"experimentalDecorators": true
