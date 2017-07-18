@@ -31,10 +31,11 @@ export class CalendarService {
         this._days = [];
         for (var d = moment(this._startOfMonth), endOfMonth = moment(this._startOfMonth).endOf('month');
              !d.isAfter(endOfMonth); d.add(1, 'd')) {
+            let date = moment(d);
             if (d.date() === 1 + this._month) {
-                this._days.push({date: d, records: [{date: d, title: `Test record ${this.monthStr}`}]});
+                this._days.push({date: date, records: [{date: date, title: `Test record ${this.monthStr}`}]});
             } else {
-                this._days.push({date: d, records: []});
+                this._days.push({date: date, records: []});
             }
         }
     }

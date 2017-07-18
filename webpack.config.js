@@ -32,6 +32,14 @@ module.exports = {
             {
                 test: /\.(pug|jade)$/,
                 use: ['raw-loader', 'pug-html-loader']
+            },
+            {
+                test: /\.css$/,
+                loaders: 'style-loader!css-loader'
+            },
+            {
+                test: /\.styl$/,
+                loaders: 'style-loader!css-loader!stylus-loader'
             }
         ]
     },
