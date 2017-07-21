@@ -24,7 +24,6 @@ module.exports = {
                   },
                   'angular2-template-loader'
                 ],
-                // use: 'ts-loader',
                 exclude: /node_modules/
             },
             {
@@ -40,12 +39,12 @@ module.exports = {
             {
                 test: /\.css$/,
                 loaders: 'style-loader!css-loader',
-                exclude: /node_modules/
+                //exclude: /node_modules/
             },
             {
                 test: /\.styl$/,
                 loaders: 'style-loader!css-loader!stylus-loader',
-                exclude: /node_modules/
+                //exclude: /node_modules/
             }
         ]
     },
@@ -59,7 +58,9 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
           options: {
               stylus: {
-                  use: [autoprefixer({browsers: ['> 3%']})]
+                  use: [
+                    autoprefixer({browsers: ['> 3%']})
+                  ]
               },
             context: '/'
           }
