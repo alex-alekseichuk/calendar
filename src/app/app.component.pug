@@ -1,9 +1,11 @@
 
-section
+.app
     h1 Calendar Application
     nav
-        a(href="javascript:;", (click)="onPrev()") Prev
-        b {{month}} {{year}}
-        a(href="javascript:;", (click)="onNext()") Next
-section
-    calendar-day(*ngFor="let day of days", [day]="day")
+        button.button(href="javascript:;", (click)="onPrev()") Prev
+        span.current {{month}} {{year}}
+        button.button(href="javascript:;", (click)="onNext()") Next
+
+    .calendar
+        calendar-day.calendar-day(*ngFor="let day of days", [day]="day")
+

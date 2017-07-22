@@ -9,21 +9,18 @@ import { CalendarService } from './calendar.service';
 })
 export class AppComponent {
   constructor(private _calendarService: CalendarService) {}
+
   get year() {
     return this._calendarService.year;
   }
   get month() {
     return this._calendarService.monthStr;
   }
+
   get days() {
     return this._calendarService.days;
   }
-  get day1() {
-    return this._calendarService.days[0];
-  }
-  get day2() {
-    return this._calendarService.days[1];
-  }
+
   onPrev() {
     this._calendarService.prevMonth();
   }
