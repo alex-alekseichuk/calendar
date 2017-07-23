@@ -1,5 +1,5 @@
 .dialog(*ngIf="visible", [@dialog]="")
-    h3.field {{day.date.format('MMMM DD')}}
+    h3 {{day.date.format('MMMM DD')}}
 
     h4.field Event:
     input.form(id="title", [(ngModel)]="title")

@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
-
-import {Day} from '../calendar.service'
+import {Day} from "../../domain/day";
 
 @Component({
     selector: 'calendar-day-dialog',

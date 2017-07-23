@@ -1,4 +1,3 @@
-
 export function truncate(value:string, max:number, wordwise:boolean=true, tail:string='…'):string {
     if (!value) return '';
 

@@ -8,7 +8,7 @@
 
         span.right
             span.label Filter:
-            input([(ngModel)]="query")
+            input([(ngModel)]="query", (ngModelChange)="updateQuery($event)")
     .calendar
         calendar-day.calendar-day(*ngFor="let day of days; let index = index", [day]="day", [index]="index",
             (daySelected)="onSelectDay(day)")

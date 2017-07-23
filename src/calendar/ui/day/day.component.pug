@@ -1,4 +1,4 @@
-div.day([ngClass]="{'hidden': isHidden, 'filled': isFilled && !isHidden, 'today': isToday}",
+div.day([ngClass]="{'hidden': isHidden, 'filtered': isFiltered && !isHidden, 'today': isToday && !isFiltered}",
     title="{{description}}", (click)="openDay()") {{date}}
 
     p.title  {{title}}

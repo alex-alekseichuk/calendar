@@ -3,10 +3,10 @@ import { FormsModule } from '@angular/forms'
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import { BrowserModule }  from '@angular/platform-browser'
 
-import { AppComponent } from './app.component'
+import { CalendarComponent } from './ui/app/app.component'
 import './styles/main.styl'
-import {DayComponent} from './day/day.component'
-import {DayDialogComponent} from "./day-dialog/dialog.component";
+import {DayComponent} from './ui/day/day.component'
+import {DayDialogComponent} from "./ui/day-dialog/dialog.component";
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import {DayDialogComponent} from "./day-dialog/dialog.component";
     FormsModule
   ],
   declarations: [
-    AppComponent, DayComponent, DayDialogComponent
+    CalendarComponent, DayComponent, DayDialogComponent
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ CalendarComponent ]
 })
-export class AppModule { }
+export class CalendarModule { }

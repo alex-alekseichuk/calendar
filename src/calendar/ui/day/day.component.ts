@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core'
-import {Day} from '../calendar.service'
-import {truncate} from '../misc';
+import {truncate} from '../../misc';
+import {Day} from "../../domain/day";
 
 @Component({
     selector: 'calendar-day',
@@ -41,8 +41,8 @@ export class DayComponent {
         return this._day.hidden;
     }
 
-    get isFilled() : boolean {
-        return !!this._day.title || !!this._day.description;
+    get isFiltered() : boolean {
+        return this._day.filtered;
     }
 
     get isToday() : boolean  {

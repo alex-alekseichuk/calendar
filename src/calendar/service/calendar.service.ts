@@ -1,25 +1,6 @@
 import * as moment from 'moment';
 import {Injectable} from '@angular/core';
-
-/**
- * Day is a cell of the month table.
- */
-export class Day {
-    title: string = '';
-    description: string = '';
-
-    hidden: boolean = false; // day of another month
-    filtered: boolean = false; // day found by filter/search function
-
-    constructor(private _date: moment.Moment) {}
-
-    get date():moment.Moment {
-        return this._date;
-    }
-    get isToday():boolean {
-        return this.date.isSame(moment(), 'day');
-    }
-}
+import {Day} from "../domain/day";
 
 @Injectable()
 export class CalendarService {
@@ -138,15 +119,19 @@ export class CalendarService {
     }
 
     private _query:string = '';
-    private filter(query:string = null):void {
-        if (query !== null)
-            this._query = query;
+    filter(query:string = null):void {
+        if (query !== null) {
+
+            this._query = query.toLowerCase();
+        }
         if (!this._query) {
             this._days.forEach(day => day.filtered = false);
         } else {
             this._days.forEach(day => day.filtered = (
-                false
-                // this._query =
+
+                day.title.toLowerCase().indexOf(this._query) !== -1
+                ||
+                day.description.toLowerCase().indexOf(this._query) !== -1
             ));
         }
     }

@@ -1,6 +1,7 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {CalendarService, Day} from './calendar.service';
-import {DayDialogComponent} from "./day-dialog/dialog.component";
+import {CalendarService} from '../../service/calendar.service';
+import {DayDialogComponent} from "../day-dialog/dialog.component";
+import {Day} from "../../domain/day";
 
 @Component({
   selector: 'calendar-app',
@@ -8,7 +9,7 @@ import {DayDialogComponent} from "./day-dialog/dialog.component";
   providers: [CalendarService],
   styles: [require('./app.component.styl').toString()]
 })
-export class AppComponent {
+export class CalendarComponent {
   constructor(private _calendarService: CalendarService) {}
 
   get year() {
@@ -44,6 +45,11 @@ export class AppComponent {
       let today:Day = this._calendarService.today();
       if (today)
           this.dlgDay.open(today);
+  }
+
+  query:string;
+  updateQuery(value:string):void {
+      this._calendarService.filter(value);
   }
 
 }
