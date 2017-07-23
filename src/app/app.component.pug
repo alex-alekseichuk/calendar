@@ -1,11 +1,16 @@
-
 .app
     h1 Calendar Application
     nav
-        button.button(href="javascript:;", (click)="onPrev()") Prev
-        span.current {{month}} {{year}}
-        button.button(href="javascript:;", (click)="onNext()") Next
+        button.btn((click)="onPrev()") Prev
+        span.label {{month}} {{year}}
+        button.btn((click)="onNext()") Next
+        button.btn((click)="onToday()") Today
 
+        span.right
+            span.label Filter:
+            input([(ngModel)]="query")
     .calendar
-        calendar-day.calendar-day(*ngFor="let day of days", [day]="day")
+        calendar-day.calendar-day(*ngFor="let day of days; let index = index", [day]="day", [index]="index",
+            (daySelected)="onSelectDay(day)")
 
+calendar-day-dialog(#dlgDay="", (save)="onSaveDay($event)", (delete)="onDeleteDay($event)")

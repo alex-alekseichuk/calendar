@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { CalendarService } from './calendar.service';
+import {Component, Input, ViewChild} from '@angular/core';
+import {CalendarService, Day} from './calendar.service';
+import {DayDialogComponent} from "./day-dialog/dialog.component";
 
 @Component({
   selector: 'calendar-app',
@@ -27,4 +28,22 @@ export class AppComponent {
   onNext() {
     this._calendarService.nextMonth();
   }
+
+  @ViewChild(DayDialogComponent) dlgDay:DayDialogComponent;
+
+  onSelectDay(day:Day):void {
+    this.dlgDay.open(day);
+  }
+  onSaveDay(day:Day):void {
+    this._calendarService.saveDay(day);
+  }
+  onDeleteDay(day:Day):void {
+    this._calendarService.deleteDay(day);
+  }
+  onToday(): void {
+      let today:Day = this._calendarService.today();
+      if (today)
+          this.dlgDay.open(today);
+  }
+
 }

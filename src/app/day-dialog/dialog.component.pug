@@ -1,0 +1,16 @@
+.dialog(*ngIf="visible", [@dialog]="")
+    h3.field {{day.date.format('MMMM DD')}}
+
+    h4.field Event:
+    input.form(id="title", [(ngModel)]="title")
+
+    h4.field Description:
+    textarea.form(id="description", [(ngModel)]="description")
+
+    p.field
+        button.btn( (click)="onSave()") Save
+        button.btn( (click)="close()") Cancel
+        button.btn( (click)="onDelete()") Delete
+
+    button.dialog__close-btn(*ngIf="closable", (click)="close()", aria-label="Close") X
+.overlay(*ngIf="visible", (click)="close()")

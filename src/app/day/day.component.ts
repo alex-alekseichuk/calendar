@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core'
+import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {Day} from '../calendar.service'
 import {truncate} from '../misc';
 
@@ -15,8 +15,12 @@ export class DayComponent {
         this._day = _day;
     }
 
+    @Input() index:number;
+
+    @Output() daySelected: EventEmitter<Day> = new EventEmitter<Day>();
+
     get date() {
-        if (this._day.isFirstRow)
+        if (this.index < 7)
             return this._day.date.format('dddd, DD');
         return this._day.date.format('DD');
     }
@@ -38,7 +42,7 @@ export class DayComponent {
     }
 
     get isFilled() : boolean {
-        return this._day.title != null;
+        return !!this._day.title || !!this._day.description;
     }
 
     get isToday() : boolean  {
@@ -46,7 +50,7 @@ export class DayComponent {
     }
 
     openDay() {
-
+        this.daySelected.emit(this._day);
     }
 
 }

@@ -1,97 +1,73 @@
 import * as moment from 'moment';
 import {Injectable} from '@angular/core';
 
-// a day on the calendar
+/**
+ * Day is a cell of the month table.
+ */
 export class Day {
-    index: number;
-    title: string;
-    description: string;
-    hidden: boolean = false;
+    title: string = '';
+    description: string = '';
 
-    constructor(
-        public date: moment.Moment
-    ) {}
+    hidden: boolean = false; // day of another month
+    filtered: boolean = false; // day found by filter/search function
 
-    get isFirstRow() {
-        return this.index < 7;
+    constructor(private _date: moment.Moment) {}
+
+    get date():moment.Moment {
+        return this._date;
     }
-    get isToday() {
+    get isToday():boolean {
         return this.date.isSame(moment(), 'day');
     }
 }
 
 @Injectable()
 export class CalendarService {
-    private _startOfMonth: moment.Moment = moment().startOf('month');
-
     constructor() {
-        this._getDays();
+        this._refreshCurrentMonth();
     }
 
-    private _days:Day[] = [];
-
-    private _addDay(day:Day) {
-        day.index = this._days.length;
-        this._days.push(day);
-    }
-
-    private _addEmptyDay(date:moment.Moment) {
-        let day = new Day(moment(date));
-        day.hidden = true;
-        this._addDay(day);
-    }
-
-    private _getDays() {
-        this._days = [];
-        let d, endOfMonth;
-
-        const emptyDaysNum = (this._startOfMonth.day() + 6) % 7;
-        d = moment(this._startOfMonth).subtract(emptyDaysNum, 'd');
-        for (let i = 0; i < emptyDaysNum; i++, d.add(1, 'd')) {
-            this._addEmptyDay(d);
-        }
-
-        for (endOfMonth = moment(this._startOfMonth).endOf('month');
-             !d.isAfter(endOfMonth); d.add(1, 'd')) {
-            let day = new Day(moment(d));
-            this._loadDay(day);
-            this._addDay(day);
-        }
-
-        // add more empty days
-        const daysInMonth = this._startOfMonth.daysInMonth() + emptyDaysNum;
-        if (daysInMonth % 7) {
-            for (let i = 0, n = 7 - (daysInMonth % 7); i < n; i++, d.add(1, 'd'))
-                this._addEmptyDay(d);
-        }
-
-    }
-
-    get year() {
+    get year():number {
         return this._startOfMonth.year();
     }
-    get month() {
+    get month():number {
         return this._startOfMonth.month();
     }
-    get monthStr() {
+    get monthStr():string {
         return this._startOfMonth.format('MMMM');
     }
 
-    nextMonth() {
+    nextMonth():void {
         this._startOfMonth.add(1,'M');
-        this._getDays();
+        this._refreshCurrentMonth();
+    }
+    prevMonth():void {
+        this._startOfMonth.subtract(1,'M');
+        this._refreshCurrentMonth();
     }
 
-    prevMonth() {
-        this._startOfMonth.subtract(1,'M');
-        this._getDays();
+    /**
+     * If that's another month then just go to the month of today.
+     * If there is current month open edit dialog for today.
+     * @returns {Day} | null
+     */
+    today():Day {
+        // TODO: move this logic to component level
+        let startOfMonth = moment().startOf('month');
+        if (startOfMonth.isSame(this._startOfMonth, 'day')) {
+            return this._days.find(day => day.isToday);
+        } else {
+            this._startOfMonth = startOfMonth;
+            this._refreshCurrentMonth();
+            return null;
+        }
     }
 
     get days():Day[] {
         return this._days;
     }
 
-    private _loadDay(day:Day):void {
+    public loadDay(day:Day):void {
         let key:string = day.date.format('YYYY-MM-DD');
         let json = localStorage[key];
         if (!json)
@@ -104,13 +80,75 @@ export class CalendarService {
             console.log(e);
         }
     }
-    private _saveDay(day:Day):void {
+    public saveDay(day:Day):void {
         let key:string = day.date.format('YYYY-MM-DD');
         let json = JSON.stringify({
             title: day.title,
             description: day.description
         });
         localStorage[key] = json;
+    }
+    public deleteDay(day:Day):void {
+        let key:string = day.date.format('YYYY-MM-DD');
+        day.title = null;
+        day.description = null;
+        delete localStorage[key];
+    }
+
+    private _startOfMonth: moment.Moment = moment().startOf('month');
+    private _days:Day[] = [];
+
+    private _addDay(day:Day):void {
+        this._days.push(day);
+    }
+
+    private _addHiddenDay(date:moment.Moment):void {
+        let day = new Day(moment(date));
+        day.hidden = true;
+        this._addDay(day);
+    }
+
+    private _refreshCurrentMonth():void {
+        this._days = [];
+        let d, endOfMonth;
+
+        // add hidden days of prev. month
+        const emptyDaysNum = (this._startOfMonth.day() + 6) % 7;
+        d = moment(this._startOfMonth).subtract(emptyDaysNum, 'd');
+        for (let i = 0; i < emptyDaysNum; i++, d.add(1, 'd')) {
+            this._addHiddenDay(d);
+        }
+
+        // add days of actual month
+        for (endOfMonth = moment(this._startOfMonth).endOf('month');
+             !d.isAfter(endOfMonth); d.add(1, 'd')) {
+            let day = new Day(moment(d));
+            this.loadDay(day);
+            this._addDay(day);
+        }
+
+        // add more hidden days of next month
+        const daysInMonth = this._startOfMonth.daysInMonth() + emptyDaysNum;
+        if (daysInMonth % 7) {
+            for (let i = 0, n = 7 - (daysInMonth % 7); i < n; i++, d.add(1, 'd'))
+                this._addHiddenDay(d);
+        }
+
+        this.filter();
+    }
+
+    private _query:string = '';
+    private filter(query:string = null):void {
+        if (query !== null)
+            this._query = query;
+        if (!this._query) {
+            this._days.forEach(day => day.filtered = false);
+        } else {
+            this._days.forEach(day => day.filtered = (
+                false
+                // this._query =
+            ));
+        }
     }
 
 }
